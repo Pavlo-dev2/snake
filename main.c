@@ -1,56 +1,34 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "linkedlistlib.h"
-#define HEIGTH 18
-#define LENGTH 18
+#include "feld.h"
+#include "snake.h"
+#define HEIGTH 16//heigth of the feld with borders
+#define LENGTH 16//weigth of the feld with borders
 
-listelement *createfeld(int heigth, int length);
-int printfeld(listelement *st, int height, int lenght);
+char *createfeld(int heigth, int length);//create the game feld list
+int printfeld(char *st, int height, int lenght);//prints the game feld list
 
 int main(int argc, char *args[])
 {
-	listelement *feld = createfeld(HEIGTH, LENGTH);
+	//create feld
+	char *feld = createfeld(HEIGTH, LENGTH);
 	printfeld(feld, HEIGTH, LENGTH);
-	rmlist(feld);
+
+	//testd
+	int testcords[] = {0, 0};
+	listelement *snake = movesnake('u', NULL, 0, 0, LENGTH, HEIGTH, 0);
+	snake = movesnake('u', snake, 0, 0, LENGTH, HEIGTH, 0);
+	snake = movesnake('u', snake, 0, 0, LENGTH, HEIGTH, 0);
+	snake = movesnake('u', snake, 0, 0, LENGTH, HEIGTH, 0);
+	snake = movesnake('u', snake, 0, 0, LENGTH, HEIGTH, 0);
+	snake = movesnake('l', snake, 0, 0, LENGTH, HEIGTH, 0);
+	snake = movesnake('l', snake, 0, 0, LENGTH, HEIGTH, 0);
+
+	printf("Pointer to snake: %p\n", snake);
+	printlist(snake, "; ", "\n");
+	printf("\n");
+	free(feld);
 }
 
-listelement *createfeld(int heigth, int length)
-{
-	listelement *st = NULL;
-	char border[] = {'#', ' '};
-	char empty[] = {' ', ' '};
-	for(int i = 0; i < heigth; i++)
-	{
-		for(int e = 0; e < length; e++)
-		{
-			if (e == 0 || e == length-1 || i == 0 || i == length-1)
-			{
-				st = append(border, 2, 'c', st, -1);
-			}
-			else
-			{
-				st = append(empty, 2, 'c', st, -1);
-			}
-		}
-	}
-	return st;
-
-}
-int printfeld(listelement *st, int height, int length)
-{
-	int xd, yd, c;
-	xd = yd = c = 0;
-	while (yd < height)
-	{
-		while (xd < length)
-		{
-			printel(retel(st, c), "");
-			xd++;
-			c++;
-		}
-		xd = 0;
-		yd++;
-		printf("\n");
-	}
-	return 0;
-}
