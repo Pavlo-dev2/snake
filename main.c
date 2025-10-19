@@ -4,6 +4,7 @@
 #include "linkedlistlib.h"
 #include "feld.h"
 #include "snake.h"
+#include "consoleinput.h"
 #define HEIGTH 16//heigth of the feld with borders
 #define LENGTH 16//weigth of the feld with borders
 
@@ -19,12 +20,23 @@ int main(int argc, char *args[])
 	//testd
 	int testcords[] = {0, 0};
 	listelement *snake = movesnake('u', NULL, 0, 0, LENGTH, HEIGTH, 0);
-	snake = movesnake('u', snake, 0, 0, LENGTH, HEIGTH, 0);
-	snake = movesnake('u', snake, 0, 0, LENGTH, HEIGTH, 0);
-	snake = movesnake('u', snake, 0, 0, LENGTH, HEIGTH, 0);
-	snake = movesnake('u', snake, 0, 0, LENGTH, HEIGTH, 0);
-	snake = movesnake('l', snake, 0, 0, LENGTH, HEIGTH, 0);
-	snake = movesnake('l', snake, 0, 0, LENGTH, HEIGTH, 0);
+	/*snake = movesnake('u', snake, 0, 0, LENGTH, HEIGTH, 1);
+	snake = movesnake('r', snake, 0, 0, LENGTH, HEIGTH, 1);
+	snake = movesnake('u', snake, 0, 0, LENGTH, HEIGTH, 1);
+	snake = movesnake('r', snake, 0, 0, LENGTH, HEIGTH, 1);
+	snake = movesnake('u', snake, 0, 0, LENGTH, HEIGTH, 1);
+	snake = movesnake('r', snake, 0, 0, LENGTH, HEIGTH, 1);*/
+
+	char c, i;
+	while ((c = get_input()) != 'E')
+	{
+		printf("Cycle started\n");
+		if (c != '\n')
+		{
+			snake = movesnake(c, snake, 0, 0, LENGTH, HEIGTH, 0);
+			printf("I: %d, %p\n", i++, snake);
+		}
+	}
 
 	printf("Pointer to snake: %p\n", snake);
 	printlist(snake, "; ", "\n");
