@@ -15,14 +15,34 @@ int main(int argc, char *args[])
 {
 	//create feld
 	char *feld = createfeld(HEIGTH, LENGTH);
-	printfeld(feld, HEIGTH, LENGTH);
 
 	//testd
 	int testcords[] = {0, 0};
-	listelement *snake = movesnake('u', NULL, 0, 0, LENGTH, HEIGTH, 0);
-	/*snake = movesnake('u', snake, 0, 0, LENGTH, HEIGTH, 1);
-	snake = movesnake('r', snake, 0, 0, LENGTH, HEIGTH, 1);
+	listelement *snake = movesnake('u', NULL, 0, 15, LENGTH, HEIGTH, 0);
+	/*updatesnake(snake, feld, LENGTH, HEIGTH);
+	if (checksnake(snake))
+	{
+		printf("You hit yourselfe...\n");
+	}
+	printfeld(feld, HEIGTH, LENGTH);
+
 	snake = movesnake('u', snake, 0, 0, LENGTH, HEIGTH, 1);
+	updatesnake(snake, feld, LENGTH, HEIGTH);
+	if (checksnake(snake))
+	{
+		printf("You hit yourselfe...\n");
+	}
+	printfeld(feld, HEIGTH, LENGTH);
+
+	snake = movesnake('d', snake, 0, 0, LENGTH, HEIGTH, 1);
+	updatesnake(snake, feld, LENGTH, HEIGTH);
+	if (checksnake(snake))
+	{
+		printf("You hit yourselfe...\n");
+	}
+	printfeld(feld, HEIGTH, LENGTH);*/
+
+	/*snake = movesnake('u', snake, 0, 0, LENGTH, HEIGTH, 1);
 	snake = movesnake('r', snake, 0, 0, LENGTH, HEIGTH, 1);
 	snake = movesnake('u', snake, 0, 0, LENGTH, HEIGTH, 1);
 	snake = movesnake('r', snake, 0, 0, LENGTH, HEIGTH, 1);*/
@@ -33,7 +53,14 @@ int main(int argc, char *args[])
 		printf("Cycle started\n");
 		if (c != '\n')
 		{
-			snake = movesnake(c, snake, 0, 0, LENGTH, HEIGTH, 0);
+			snake = movesnake(c, snake, 0, 0, LENGTH, HEIGTH, 1);
+			if (checksnake(snake))
+			{
+				printf("You hit yourselfe...\n");
+				break;
+			}
+			updatesnake(snake, feld, LENGTH, HEIGTH);
+			printfeld(feld, HEIGTH, LENGTH);
 			printf("I: %d, %p\n", i++, snake);
 		}
 	}

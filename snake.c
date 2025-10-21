@@ -24,10 +24,10 @@ listelement *movesnake(char d, listelement *st, int x, int y, int length, int he
 		switch(d)
 		{
 			case 'u':
-				new_y++;
+				new_y--;
 				break;
 			case 'd':
-				new_y--;
+				new_y++;
 				break;
 			case 'r':
 				new_x++;
@@ -52,13 +52,36 @@ listelement *movesnake(char d, listelement *st, int x, int y, int length, int he
 	{
 		st = pop(st, -1);
 	}
-	if (len(st) >= 3 && ((int*)(retel(st, 2)->el))[0] == new_x && ((int*)(retel(st, 2)->el))[1] == new_y)
+	/*if (len(st) >= 3 && ((int*)(retel(st, 2)->el))[0] == new_x && ((int*)(retel(st, 2)->el))[1] == new_y)
 	{
 		printf("Ops!, wrong direction\n");
 		printlist(st, ";", "\n");
 		printf("\tLen: %ld\n\tPNX: %d\n\tNX: %d\n\tPNY: %d\n\tNY: %d\n", len(st), ((int*)(retel(st, 2)->el))[0], new_x, ((int*)(retel(st, 2)->el))[1], new_y);
 		rmlist(st);
 		return NULL;
-	}
+	}*/
 	return st;
+}
+
+int checksnake(listelement *snake)
+{
+	int tot, act, length;
+	length = len(snake);
+	tot = act = 0;
+	while (tot < length)
+	{
+		int totvelx = *(int*)(retel(snake, tot)->el);
+		int totvely = ((int*)(retel(snake, tot)->el))[1];
+		listelement actel;
+		for (act = tot+1; act < length; act++)
+		{
+			actel = *retel(snake, act);
+			if (totvelx == *(int*)actel.el && totvely == ((int*)actel.el)[1])
+			{
+				return 1;
+			}
+		}
+		tot++;
+	}
+	return 0;
 }
