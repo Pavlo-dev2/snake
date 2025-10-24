@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include "linkedlistlib.h"
 
 listelement *movesnake(char d, listelement *st, int x, int y, int length, int heigth, char apple)
@@ -84,4 +86,25 @@ int checksnake(listelement *snake)
 		tot++;
 	}
 	return 0;
+}
+
+int createapple(char *feld, int length, int heigth, int snakelen)
+{
+	int avpos[length*heigth-snakelen], i, p;
+	for (i = 0, p = 0; i < length*heigth*2; i += 2)
+	{
+		if (feld[i] != '#') 
+		{
+			avpos[p] = i;
+			p++;
+		}
+	}
+	int r = (rand() % length*heigth-snakelen + 1);
+	while (r < 0)
+	{
+		r = (rand() % length*heigth-snakelen + 1);
+	}
+	printf("I: %d\nP: %d\navpos len: %d\nfeld len: %d\nR: %d\nPOS: %d\n", i, p, length*heigth-snakelen, length*heigth, r, (avpos[r]));
+	feld[(avpos[r])] = feld[(avpos[r])+1] = '$';
+	return r;
 }

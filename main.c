@@ -8,8 +8,8 @@
 #define HEIGTH 16//heigth of the feld with borders
 #define LENGTH 16//weigth of the feld with borders
 
-char *createfeld(int heigth, int length);//create the game feld list
-int printfeld(char *st, int height, int lenght);//prints the game feld list
+//char *createfeld(int heigth, int length);//create the game feld list
+//int printfeld(char *st, int height, int lenght);//prints the game feld list
 
 int main(int argc, char *args[])
 {
@@ -60,6 +60,7 @@ int main(int argc, char *args[])
 				break;
 			}
 			updatesnake(snake, feld, LENGTH, HEIGTH);
+			createapple(feld, LENGTH, HEIGTH, len(snake));
 			printfeld(feld, HEIGTH, LENGTH);
 			printf("I: %d, %p\n", i++, snake);
 		}
