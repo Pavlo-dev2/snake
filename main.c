@@ -47,20 +47,30 @@ int main(int argc, char *args[])
 	snake = movesnake('u', snake, 0, 0, LENGTH, HEIGTH, 1);
 	snake = movesnake('r', snake, 0, 0, LENGTH, HEIGTH, 1);*/
 
-	char c, i;
+	char c, i, a;
+	int apple = createapple(feld, LENGTH, HEIGTH, len(snake), -1);
+	a = checkapple(snake, apple, LENGTH);
 	while ((c = get_input()) != 'E')
 	{
 		printf("Cycle started\n");
 		if (c != '\n')
 		{
-			snake = movesnake(c, snake, 0, 0, LENGTH, HEIGTH, 1);
+			snake = movesnake(c, snake, 0, 0, LENGTH, HEIGTH, a);
 			if (checksnake(snake))
 			{
 				printf("You hit yourselfe...\n");
 				break;
 			}
 			updatesnake(snake, feld, LENGTH, HEIGTH);
-			createapple(feld, LENGTH, HEIGTH, len(snake));
+			if (a = checkapple(snake, apple, LENGTH))
+			{
+				apple = createapple(feld, LENGTH, HEIGTH, len(snake), -1);
+			}
+			else
+			{
+				apple = createapple(feld, LENGTH, HEIGTH, len(snake), apple);
+			}
+			printf("Hit the apple: %d\nApple: %d\n", a, apple);
 			printfeld(feld, HEIGTH, LENGTH);
 			printf("I: %d, %p\n", i++, snake);
 		}

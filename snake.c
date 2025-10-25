@@ -88,23 +88,39 @@ int checksnake(listelement *snake)
 	return 0;
 }
 
-int createapple(char *feld, int length, int heigth, int snakelen)
+int createapple(char *feld, int length, int heigth, int snakelen, int r)//create new apple if r == -1 or print old one if not
 {
-	int avpos[length*heigth-snakelen], i, p;
-	for (i = 0, p = 0; i < length*heigth*2; i += 2)
+	if (r == -1)
 	{
-		if (feld[i] != '#') 
+		int avpos[length*heigth-snakelen], i, p;
+		for (i = 0, p = 0; i < length*heigth*2; i += 2)
 		{
-			avpos[p] = i;
-			p++;
+			if (feld[i] != '#') 
+			{
+				//printf("New pos = %d", i);
+				avpos[p] = i;
+				p++;
+			}
 		}
-	}
-	int r = (rand() % length*heigth-snakelen + 1);
-	while (r < 0)
-	{
 		r = (rand() % length*heigth-snakelen + 1);
+		while (r < 0)
+		{
+			r = (rand() % length*heigth-snakelen + 1);
+		}
+		printf("I: %d\nP: %d\navpos len: %d\nfeld len: %d\nR: %d\nPOS: %d\n", i, p, length*heigth-snakelen, length*heigth, r, (avpos[r]));
+		feld[(avpos[r])] = feld[(avpos[r])+1] = '$';
+		return avpos[r];
 	}
-	printf("I: %d\nP: %d\navpos len: %d\nfeld len: %d\nR: %d\nPOS: %d\n", i, p, length*heigth-snakelen, length*heigth, r, (avpos[r]));
-	feld[(avpos[r])] = feld[(avpos[r])+1] = '$';
+	feld[r] = feld[r+1] = '$';
 	return r;
+}
+
+int checkapple(listelement *snake, int apple, int length)
+{
+	printf("1: %d, 2: %d\n", ((*(int*)snake->el) + (length-1)*(((int*)(snake->el))[1]))*2, apple);
+	if (snake != NULL && ((*(int*)snake->el) + (length)*(((int*)(snake->el))[1]))*2 == apple)
+	{
+		return 1;
+	}
+	return 0;
 }
