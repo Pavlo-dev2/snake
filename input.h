@@ -1,6 +1,6 @@
 #ifndef INPUT_H
 #define INPUT_H
 
-char input();
+char input(float *st);
 
 #endif 

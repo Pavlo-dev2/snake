@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <unistd.h>
 #include "linkedlistlib.h"
 #include "feld.h"
 #include "snake.h"
@@ -11,7 +12,7 @@
 #define LENGTH 16//weigth of the feld with borders
 #define SPEED 100//speed on the begining of the game
 #define SPEEDDIF 20//how fast speed drows up
-#define SPEEDMAX 20//max speed
+#define SPEEDMAX 200//max speed
 
 //char *createfeld(int heigth, int length);//create the game feld list
 //int printfeld(char *st, int height, int lenght);//prints the game feld list
@@ -57,17 +58,19 @@ int main(int argc, char *args[])
 	a = checkapple(snake, apple, LENGTH);
 	int applecount = 0;
 	float speed = SPEED;
-	float time;
-	while ((c = input()) != 'E')
+	float slt = 10000*speed;
+	//float time;
+	while ((c = input(&slt)) != 'E')
 	{
+		printf("C: %c\n", c);
 		printf("Speed: %f\n", speed);
-		time = clock()/CLOCKS_PER_SEC;
+		//time = clock()/CLOCKS_PER_SEC;
 		if (a)
 		{
 			applecount++;
-			if (speed > SPEEDMAX)
+			if (speed <  SPEEDMAX)
 			{
-				speed -= SPEEDDIF;
+				speed += SPEEDDIF;
 			}
 		}
 		printf("Cycle started\n");
@@ -95,7 +98,8 @@ int main(int argc, char *args[])
 			printf("Hit the apple: %d\nApple: %d\n", a, apple);
 			printfeld(feld, HEIGTH, LENGTH);
 			printf("I: %d, %p\n", i++, snake);
-			while((clock()/CLOCKS_PER_SEC)-time < speed/100);
+			//while((clock()/CLOCKS_PER_SEC)-time < speed/100);
+			usleep(slt);
 		}
 		printf("Apple count: %d\n", applecount);
 	}
