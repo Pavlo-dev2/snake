@@ -11,102 +11,75 @@
 #define HEIGTH 16//heigth of the feld with borders
 #define LENGTH 16//weigth of the feld with borders
 #define SPEED 100//speed on the begining of the game
-#define SPEEDDIF 20//how fast speed drows up
+#define SPEEDDIF 10//how fast speed drows up
 #define SPEEDMAX 200//max speed
-
-//char *createfeld(int heigth, int length);//create the game feld list
-//int printfeld(char *st, int height, int lenght);//prints the game feld list
 
 int main(int argc, char *args[])
 {
 	//create feld
 	char *feld = createfeld(HEIGTH, LENGTH);
 
-	//testd
-	int testcords[] = {0, 0};
+	//create snake
 	listelement *snake = movesnake('u', NULL, 0, 15, LENGTH, HEIGTH, 0);
-	/*updatesnake(snake, feld, LENGTH, HEIGTH);
-	if (checksnake(snake))
-	{
-		printf("You hit yourselfe...\n");
-	}
-	printfeld(feld, HEIGTH, LENGTH);
 
-	snake = movesnake('u', snake, 0, 0, LENGTH, HEIGTH, 1);
-	updatesnake(snake, feld, LENGTH, HEIGTH);
-	if (checksnake(snake))
-	{
-		printf("You hit yourselfe...\n");
-	}
-	printfeld(feld, HEIGTH, LENGTH);
-
-	snake = movesnake('d', snake, 0, 0, LENGTH, HEIGTH, 1);
-	updatesnake(snake, feld, LENGTH, HEIGTH);
-	if (checksnake(snake))
-	{
-		printf("You hit yourselfe...\n");
-	}
-	printfeld(feld, HEIGTH, LENGTH);*/
-
-	/*snake = movesnake('u', snake, 0, 0, LENGTH, HEIGTH, 1);
-	snake = movesnake('r', snake, 0, 0, LENGTH, HEIGTH, 1);
-	snake = movesnake('u', snake, 0, 0, LENGTH, HEIGTH, 1);
-	snake = movesnake('r', snake, 0, 0, LENGTH, HEIGTH, 1);*/
-
-	char c, i, a;
+	//create apple
 	int apple = createapple(feld, LENGTH, HEIGTH, len(snake), -1);
-	a = checkapple(snake, apple, LENGTH);
-	int applecount = 0;
-	float speed = SPEED;
-	float slt = 10000*speed;
-	//float time;
-	while ((c = input(&slt)) != 'E')
+	
+	float speed = SPEED;//snake speed
+	float slt = 1*1000000;//time bitwine moves in sec
+	float time = 1*1000000;//time to wate after input
+	
+	char c;//direction
+	char a = checkapple(snake, apple, LENGTH);//1 if hit apple, 0, if not
+	
+	int applecount = 0;//counts apple
+
+	//game loop
+	while ((c = input(&time)) != 'E')//get input
 	{
-		printf("C: %c\n", c);
-		printf("Speed: %f\n", speed);
-		//time = clock()/CLOCKS_PER_SEC;
+		//print information
+		printf("Score: %d\nSpeed: %.0f\n", applecount, speed);
+
+		//if hit apple
 		if (a)
 		{
 			applecount++;
-			if (speed <  SPEEDMAX)
+			if (speed < SPEEDMAX)
 			{
 				speed += SPEEDDIF;
+				slt = slt-speed*1000;
 			}
 		}
-		printf("Cycle started\n");
-		if (c != '\n')
+		
+		snake = movesnake(c, snake, 0, 0, LENGTH, HEIGTH, a);
+		if (checksnake(snake))
 		{
-			snake = movesnake(c, snake, 0, 0, LENGTH, HEIGTH, a);
-			if (checksnake(snake))
-			{
-				printf("You hit yourselfe...\n");
-				break;
-			}
-			else if (snake == NULL)
-			{
-				break;
-			}
-			updatesnake(snake, feld, LENGTH, HEIGTH);
-			if (a = checkapple(snake, apple, LENGTH))
-			{
-				apple = createapple(feld, LENGTH, HEIGTH, len(snake), -1);
-			}
-			else
-			{
-				apple = createapple(feld, LENGTH, HEIGTH, len(snake), apple);
-			}
-			printf("Hit the apple: %d\nApple: %d\n", a, apple);
-			printfeld(feld, HEIGTH, LENGTH);
-			printf("I: %d, %p\n", i++, snake);
-			//while((clock()/CLOCKS_PER_SEC)-time < speed/100);
-			usleep(slt);
+			printf("You hit yourselfe...\n");
+			break;
 		}
-		printf("Apple count: %d\n", applecount);
+		else if (snake == NULL)
+		{
+			break;
+		}
+
+		//update feld
+		updatesnake(snake, feld, LENGTH, HEIGTH);
+		if (a = checkapple(snake, apple, LENGTH))
+		{
+			apple = createapple(feld, LENGTH, HEIGTH, len(snake), -1);
+		}
+		else
+		{
+			apple = createapple(feld, LENGTH, HEIGTH, len(snake), apple);
+		}
+		printfeld(feld, HEIGTH, LENGTH);
+		
+		//sleap
+		printf("SLT: %f\n", slt);
+		usleep(time);
+		time = slt;
 	}
 
-	printf("Pointer to snake: %p\n", snake);
-	printlist(snake, "; ", "\n");
-	printf("\n");
 	free(feld);
 }
 
