@@ -30,23 +30,17 @@ char input(float *st)
 	while ((*st - (td = (clock()/CLOCKS_PER_SEC) - at)* 1000000) > 0)//TODO
 	{
 		read(fd, &ev, sizeof(ev));
-		//printf("Message 1\n");
 		if (ev.type == EV_KEY)
 		{
-			printf("Message 2\n");
-			//if (ev.value == 1)
-			//{
-				printf("Message 3\n");
-				switch (ev.code)
-				{
-					case KEY_W: dr = 'u'; break;
-					case KEY_D: dr = 'r'; break;
-					case KEY_S: dr = 'd'; break;
-					case KEY_A: dr = 'l'; break;
-					case KEY_E: dr = 'E'; break;
-				}
-				break;
-			//}
+			switch (ev.code)
+			{
+				case KEY_W: dr = 'u'; break;
+				case KEY_D: dr = 'r'; break;
+				case KEY_S: dr = 'd'; break;
+				case KEY_A: dr = 'l'; break;
+				case KEY_E: dr = 'E'; break;
+			}
+			break;
 		}
 	}
 
@@ -63,6 +57,5 @@ char input(float *st)
 	{
 		*st = 0;
 	}
-	printf("Message 4, dr: %c dr == 0: %d\n", dr, dr == 0);
 	return lastdr;
 }

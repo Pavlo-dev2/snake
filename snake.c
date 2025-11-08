@@ -3,11 +3,21 @@
 #include <time.h>
 #include "linkedlistlib.h"
 
-listelement *movesnake(char d, listelement *st, int x, int y, int length, int heigth, char apple)
+listelement *movesnake(char d, listelement *st, int x, int y, int length, int heigth, char apple);
 //moves snake in direction d(u- up; r- rigth; d- down; l- left) appele 1 if hit apple, 0 if not;
 //st == NULL if need to create new snake, returns NULL if hit the border;
+
+int checksnake(listelement *snake);
+//chesk if snake hit itselve, 1 if true, 0 if not
+
+int createapple(char *feld, int length, int heigth, int snakelen, int r);
+//create and print  new apple if r == -1 or print old one if not
+
+int checkapple(listelement *snake, int apple, int length);
+//chek is snake hit the apple, 1 if true, 0 if not
+
+listelement *movesnake(char d, listelement *st, int x, int y, int length, int heigth, char apple)
 {
-	printf("Function started\n");
 	char p = 0;//flag, if st was NULL
 
 	//count new cords
@@ -39,7 +49,6 @@ listelement *movesnake(char d, listelement *st, int x, int y, int length, int he
 				break;	
 		}
 	}
-	printf("New cords: %d:%d\n", new_x, new_y);
 	if (new_x < 0 || new_y < 0 || new_x > 15 || new_y > 15)
 	{
 		printf("You hit the border...\n");
@@ -54,18 +63,11 @@ listelement *movesnake(char d, listelement *st, int x, int y, int length, int he
 	{
 		st = pop(st, -1);
 	}
-	/*if (len(st) >= 3 && ((int*)(retel(st, 2)->el))[0] == new_x && ((int*)(retel(st, 2)->el))[1] == new_y)
-	{
-		printf("Ops!, wrong direction\n");
-		printlist(st, ";", "\n");
-		printf("\tLen: %ld\n\tPNX: %d\n\tNX: %d\n\tPNY: %d\n\tNY: %d\n", len(st), ((int*)(retel(st, 2)->el))[0], new_x, ((int*)(retel(st, 2)->el))[1], new_y);
-		rmlist(st);
-		return NULL;
-	}*/
 	return st;
 }
 
 int checksnake(listelement *snake)
+//chesk if snake hit itselve, 1 if true, 0 if not
 {
 	int tot, act, length;
 	length = len(snake);
@@ -88,37 +90,39 @@ int checksnake(listelement *snake)
 	return 0;
 }
 
-int createapple(char *feld, int length, int heigth, int snakelen, int r)//create new apple if r == -1 or print old one if not
+int createapple(char *feld, int length, int heigth, int snakelen, int r)
+//create new apple if r == -1 or print old one if not
 {
 	if (r == -1)
 	{
-		int avpos[length*heigth-snakelen], i, p;
-		for (i = 0, p = 0; i < length*heigth*2; i += 2)
+		int avpos[length*heigth-snakelen], i, p;//availible possions
+		for (i = 0, p = 0; i < length*heigth; i++)
 		{
 			if (feld[i] != '#') 
 			{
-				//printf("New pos = %d", i);
 				avpos[p] = i;
 				p++;
 			}
 		}
-		r = (rand() % length*heigth-snakelen + 1);
+
+		r = (rand() % length*heigth-snakelen + 1);//chouse random availible possion
 		while (r < 0)
 		{
 			r = (rand() % length*heigth-snakelen + 1);
 		}
-		printf("I: %d\nP: %d\navpos len: %d\nfeld len: %d\nR: %d\nPOS: %d\n", i, p, length*heigth-snakelen, length*heigth, r, (avpos[r]));
-		feld[(avpos[r])] = feld[(avpos[r])+1] = '$';
+		
+		//add apple on feld
+		feld[(avpos[r])] = '$';
 		return avpos[r];
 	}
-	feld[r] = feld[r+1] = '$';
+	feld[r] = '$';
 	return r;
 }
 
 int checkapple(listelement *snake, int apple, int length)
+//chek is snake hit the apple, 1 if true, 0 if not
 {
-	printf("1: %d, 2: %d\n", ((*(int*)snake->el) + (length-1)*(((int*)(snake->el))[1]))*2, apple);
-	if (snake != NULL && ((*(int*)snake->el) + (length)*(((int*)(snake->el))[1]))*2 == apple)
+	if (snake != NULL && ((*(int*)snake->el) + (length)*(((int*)(snake->el))[1])) == apple)
 	{
 		return 1;
 	}
