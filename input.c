@@ -40,7 +40,7 @@ char input(float *st)
 				case KEY_A: dr = 'l'; break;
 				case KEY_E: dr = 'E'; break;
 			}
-			break;
+			//break;
 		}
 	}
 
