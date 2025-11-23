@@ -59,10 +59,22 @@ int drawrect(unsigned char r, unsigned char g, unsigned char b, char x, char y, 
 		close(fb0);
 		return 1;
 	}
+
+	float sty = (float)y/un * vinfo.yres;
+	float edy = (float)y/un * vinfo.yres + vinfo.yres/(float)un;
 	
-	for (float ay = (float)y/un * vinfo.yres; ay < (float)y/un*vinfo.yres + vinfo.yres/(float)un; ay++)
+	float stx = (float)x/un * vinfo.yres;
+	//float stx = (float)x/un * vinfo.yres;
+	float edx = (float)x/un * vinfo.yres + vinfo.yres/(float)un;
+	//float dif = (edx-stx)/2;
+	//stx = stx + (screensize/2-dif);
+	//edx = edx + (screensize/2-dif);
+
+	//for (float ay = (float)y/un * vinfo.yres; ay < (float)y/un*vinfo.yres + vinfo.yres/(float)un; ay++)
+	for (float ay = sty; ay < edy; ay++)
 	{
-		for (float ax = (float)x/un* vinfo.yres; ax < (float)x/un*vinfo.yres + vinfo.yres/(float)un; ax++)
+		//for (float ax = (float)x/un* vinfo.yres; ax < (float)x/un*vinfo.yres + vinfo.yres/(float)un; ax++)
+		for (float ax = stx; ax < edx; ax++)
 		{
 			//printf("In cycle 2\n");	
             		long location = (ax + vinfo.xoffset) * (vinfo.bits_per_pixel / 8)
@@ -70,6 +82,7 @@ int drawrect(unsigned char r, unsigned char g, unsigned char b, char x, char y, 
 			
 			if (vinfo.bits_per_pixel == 32)
 			{
+				//printf("lol\n");
 				//printf("in condition\n");
 				fbp[location] = b;
 				fbp[location+1] = g;

@@ -38,7 +38,7 @@ int main(int argc, char *args[])
 	while ((c = input(&time)) != 'E')//get input
 	{
 		//print information
-		printf("Score: %d\nSpeed: %.0f\n", applecount, speed);
+		//printf("Score: %d\nSpeed: %.0f\n", applecount, speed);
 
 		//if hit apple
 		if (a)
@@ -72,10 +72,10 @@ int main(int argc, char *args[])
 		{
 			apple = createapple(feld, LENGTH, HEIGTH, len(snake), apple);
 		}
-		printfeld(feld, HEIGTH, LENGTH);
+		drawfeld(feld, HEIGTH, LENGTH);
 		
 		//sleap
-		printf("SLT: %f\n", slt);
+		//printf("SLT: %f\n", slt);
 		usleep(time);
 		time = slt;
 	}
