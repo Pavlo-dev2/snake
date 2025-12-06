@@ -1,4 +1,4 @@
-# cli_linux_phonebook
+# snake
 <h1>This is a Snake game for linux</h1>
 <h1>This program only works on Linux PCs</h1>
 
