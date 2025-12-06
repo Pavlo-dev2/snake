@@ -5,9 +5,13 @@
 #include <linux/input.h>
 #include <errno.h>
 #include <sys/select.h>
-#include <time.h>
+#include "timing.h"
 
 #define ADDRES "/dev/input/event2"
+
+long double rettime();//return actual time sinse start of the timer
+long double timediff(long double time1, long double time2);//return diferense in times(time2 - time1)
+int sleepsec(long double time);//sleep time seconds
 
 static int fd = -1;//file deckriptor
 static char lastdr = 'u';//last direction
@@ -23,11 +27,11 @@ char input(float st)
 		fd = open(ADDRES, O_RDONLY | O_NONBLOCK);
 	}
 
-	long double bt = clock()/CLOCKS_PER_SEC;//begining time
+	long double bt = rettime();//begining time
 
 	//wait on input as long as you have time
 	//while ((st - (td = (clock()/CLOCKS_PER_SEC) - at)* 1000000) > 0)//TODO
-	while (((clock()/CLOCKS_PER_SEC) - bt) < st)
+	while (timediff(bt, rettime()) < st)
 	{
 		//printf("Actual time: %ld\nBegining time: %f\nTime: %f\n", clock()/CLOCKS_PER_SEC, bt, st);
 		read(fd, &ev, sizeof(ev));
@@ -35,16 +39,25 @@ char input(float st)
 		{
 			switch (ev.code)
 			{
-				case KEY_W: dr = 'u'; break;
-				case KEY_D: dr = 'r'; break;
-				case KEY_S: dr = 'd'; break;
-				case KEY_A: dr = 'l'; break;
-				case KEY_E: dr = 'E'; break;
+				case KEY_W:
+					if (lastdr != 'd')
+						dr = 'u'; break;
+				case KEY_D:
+					if (lastdr != 'l')
+						dr = 'r'; break;
+				case KEY_S:
+					if (lastdr != 'u')
+						dr = 'd'; break;
+				case KEY_A:
+					if (lastdr != 'r')
+						dr = 'l'; break;
+				case KEY_E:
+					dr = 'E'; break;
 			}
 			//break;
 		}
 		//printf("ST: %.0f\n", st);
-		usleep(st*10);
+		sleepsec(st*0.001);
 	}
 
 	if (dr != 0)
