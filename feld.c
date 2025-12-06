@@ -53,8 +53,7 @@ int drawfeld(char *st, int heigth, int length)
 {
 	int fb0 = open("/dev/fb0", O_RDWR);
 	
-	drawrect(0, 255, 255, 0, 0, 1, fb0);
-	clear(0, 0, 0, fb0);
+	clearfeld(100, 100, 100, fb0);
 	int tot = 0;
 	for (int y = 0; y < heigth; y++)
 	{

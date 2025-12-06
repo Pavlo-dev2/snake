@@ -7,12 +7,11 @@
 #include "feld.h"
 #include "snake.h"
 #include "input.h"
-#include "consoleinput.h"
 #define HEIGTH 16//heigth of the feld with borders
 #define LENGTH 16//weigth of the feld with borders
-#define SPEED 100//speed on the begining of the game
-#define SPEEDDIF 10//how fast speed drows up
-#define SPEEDMAX 200//max speed
+#define SPEEDDEV 0.75//how fast speed drows up
+#define MINTIME 0.1//minimal time betwine moves in sec
+#define STARTTIME 1//starting time
 
 int main(int argc, char *args[])
 {
@@ -25,9 +24,8 @@ int main(int argc, char *args[])
 	//create apple
 	int apple = createapple(feld, LENGTH, HEIGTH, len(snake), -1);
 	
-	float speed = SPEED;//snake speed
-	float slt = 1*1000000;//time bitwine moves in sec
-	float time = 1*1000000;//time to wate after input
+	float slt = STARTTIME;//time bitwine moves in sec
+	//float time = slt;//time to wate after input
 	
 	char c;//direction
 	char a = checkapple(snake, apple, LENGTH);//1 if hit apple, 0, if not
@@ -35,19 +33,19 @@ int main(int argc, char *args[])
 	int applecount = 0;//counts apple
 
 	//game loop
-	while ((c = input(&time)) != 'E')//get input
+	while ((c = input(slt)) != 'E')//get input
 	{
 		//print information
-		//printf("Score: %d\nSpeed: %.0f\n", applecount, speed);
+		//printf("core: %d\nSpeed: %.0f\n", applecount, speed);
 
 		//if hit apple
 		if (a)
 		{
 			applecount++;
-			if (speed < SPEEDMAX)
+			if (slt*SPEEDDEV >= MINTIME)
 			{
-				speed += SPEEDDIF;
-				slt = slt-speed*1000;
+				slt *= SPEEDDEV;
+				printf("\nSLT: %f\n", slt);
 			}
 		}
 		
@@ -72,14 +70,14 @@ int main(int argc, char *args[])
 		{
 			apple = createapple(feld, LENGTH, HEIGTH, len(snake), apple);
 		}
+		//putchar('\n');
 		drawfeld(feld, HEIGTH, LENGTH);
 		
 		//sleap
-		//printf("SLT: %f\n", slt);
-		usleep(time);
-		time = slt;
+		//usleep(time);
 	}
 
+	printf("Score: %d\nSLT: %f\n", applecount, slt);
 	free(feld);
 }
 

@@ -12,7 +12,7 @@
 static int fd = -1;//file deckriptor
 static char lastdr = 'u';//last direction
 
-char input(float *st)
+char input(float st)
 {
 	struct input_event ev;//event
 	char dr = 0;//new ditection
@@ -23,12 +23,13 @@ char input(float *st)
 		fd = open(ADDRES, O_RDONLY | O_NONBLOCK);
 	}
 
-	float td = 0;
-	float at = clock()/CLOCKS_PER_SEC;
+	long double bt = clock()/CLOCKS_PER_SEC;//begining time
 
 	//wait on input as long as you have time
-	while ((*st - (td = (clock()/CLOCKS_PER_SEC) - at)* 1000000) > 0)//TODO
+	//while ((st - (td = (clock()/CLOCKS_PER_SEC) - at)* 1000000) > 0)//TODO
+	while (((clock()/CLOCKS_PER_SEC) - bt) < st)
 	{
+		//printf("Actual time: %ld\nBegining time: %f\nTime: %f\n", clock()/CLOCKS_PER_SEC, bt, st);
 		read(fd, &ev, sizeof(ev));
 		if (ev.type == EV_KEY)
 		{
@@ -42,6 +43,8 @@ char input(float *st)
 			}
 			//break;
 		}
+		//printf("ST: %.0f\n", st);
+		usleep(st*10);
 	}
 
 	if (dr != 0)
@@ -49,13 +52,5 @@ char input(float *st)
 		lastdr = dr;
 	}
 
-	if (*st-td*1000000 > 0)
-	{
-		*st = *st - td*1000000;
-	}
-	else
-	{
-		*st = 0;
-	}
 	return lastdr;
 }
