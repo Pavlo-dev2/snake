@@ -45,7 +45,6 @@ int main(int argc, char *args[])
 			if (slt*SPEEDDEV >= MINTIME)
 			{
 				slt *= SPEEDDEV;
-				printf("\nSLT: %f\n", slt);
 			}
 		}
 		
